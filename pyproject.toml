@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "mapbot-py"
+version = "0.1.0"
+description = ""
+authors = ["TetraspaceW <holomanga@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+discord-py = "^2.3.2"
+geopy = "^2.4.1"
+supabase = "^2.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
