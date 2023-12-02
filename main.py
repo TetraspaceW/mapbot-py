@@ -23,7 +23,7 @@ async def on_ready():
 
 
 @client.event
-async def on_command_error(ctx: commands.Context):
+async def on_command_error(ctx: commands.Context, _):
     await ctx.message.add_reaction("⚠️")
 
 
@@ -38,15 +38,20 @@ async def location(ctx: commands.Context, *args):
 
     _, id_exists = locations_table.select('user_id').eq('user_id', ctx.author.id).execute()
 
-    supabase_request = {'location': coordinates,
-                        'user_name': ctx.author.name}
+    airport_data = nearest_airport(coordinates)
+    if airport_data['distance'] <= 100:
+        airport_code = airport_data['code']
+    else:
+        airport_code = None
+
+    supabase_request = {'location': coordinates, 'user_name': ctx.author.name, 'nearest_airport': airport_code}
 
     if id_exists:
         locations_table.update(supabase_request).eq('user_id', ctx.author.id).execute()
     else:
         supabase_request["user_id"] = ctx.author.id
         locations_table.insert(supabase_request).execute()
-        
+
     await ctx.send(f"Your nearest airport is {nearest_airport(coordinates)}")
 
 
@@ -64,7 +69,7 @@ class Location(TypedDict):
 
 def nearest_airport(location: Location, frontier: bool = True):
     airports = supabase.table('airport').select('code,location,name').eq('frontier', frontier).execute()
-    distances = [{'name': airport['name'],
+    distances = [{'name': airport['name'], 'code': airport['code'],
                   'distance': geodesic((location['lat'], location['lng']),
                                        (airport['location']['lat'], airport['location']['lng'])).miles}
                  for airport
