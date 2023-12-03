@@ -53,7 +53,7 @@ async def location(ctx: commands.Context, *args):
         locations_table.insert(supabase_request).execute()
 
     await ctx.send(f"Your nearest airport is {nearest_airport(coordinates)}")
-
+    
 
 @client.command()
 async def obscure(ctx: commands.Context):

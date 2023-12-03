@@ -10,7 +10,7 @@ supabase = create_client(supabase_url, supabase_key)
 
 
 def update_airport_names(airports: list[str] = None):
-    with open('./airport_loader/airports.csv') as file:
+    with open('./airport_loader/frontier_airports.csv') as file:
         airports_reader = csv.reader(file, quotechar='\'', delimiter=',')
         for row in airports_reader:
             [code, name] = row
@@ -22,7 +22,7 @@ def update_airport_names(airports: list[str] = None):
 
 # TODO: populate OR update depending on whether they already exist
 def populate_geocoded_airports(airports: list[str]):
-    with open('./airport_loader/airports.csv') as file:
+    with open('./airport_loader/frontier_airports.csv') as file:
         airports_reader = csv.reader(file, quotechar='\'', delimiter=',')
         for row in airports_reader:
             [code, name] = row
@@ -35,3 +35,10 @@ def populate_geocoded_airports(airports: list[str]):
                     {"location": {"lat": airport_location.latitude, "lng": airport_location.longitude}, "code": code,
                      "frontier": True, "name": name}).execute()
                 time.sleep(2)  # let's not get rate limited
+
+
+# TODO: implement this function
+def populate_routes():
+    routes_table = supabase.table('route')
+    # TODO: probably we want more data for routes
+    routes_table.insert({"start": None, "end": None, "frontier": None}).execute()
