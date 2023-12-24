@@ -10,6 +10,9 @@ python = "^3.11"
 discord-py = "^2.3.2"
 geopy = "^2.4.1"
 supabase = "^2.1.0"
+requests = "^2.31.0"
+python-dotenv = "^1.0.0"
+pandas = "^2.1.4"
 
 
 [build-system]
