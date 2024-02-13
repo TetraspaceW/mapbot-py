@@ -8,9 +8,13 @@ from geopy.distance import geodesic
 from geopy.geocoders import Nominatim
 from supabase import create_client
 
+import dotenv
+
 intents = discord.Intents.default()
 intents.message_content = True
 client = commands.Bot(command_prefix="!ampmap ", intents=intents)
+
+dotenv.load_dotenv()
 
 supabase_url = os.environ.get("SUPABASE_URL")
 supabase_key = os.environ.get("SUPABASE_KEY")
